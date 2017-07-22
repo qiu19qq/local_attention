@@ -137,6 +137,7 @@ class Seq2SeqModel(object):
           decoder_inputs,
           enc_cell,
           dec_cell,
+          batch_size=self.batch_size,
           num_encoder_symbols=source_vocab_size,
           num_decoder_symbols=target_vocab_size,
           embedding_size=size,

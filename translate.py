@@ -73,6 +73,10 @@ tf.app.flags.DEFINE_boolean("self_test", False,
                             "Run a self-test if this is set to True.")
 tf.app.flags.DEFINE_boolean("use_fp16", False,
                             "Train using fp16 instead of fp32.")
+tf.app.flags.DEFINE_string("checkpoint_dir", "/checkpoint",
+                            "checkpoint dir.")
+
+
 
 FLAGS = tf.app.flags.FLAGS
 
@@ -101,6 +105,7 @@ def read_data(source_path, target_path, max_size=None):
   data_set = [[] for _ in _buckets]
   with tf.gfile.GFile(source_path, mode="r") as source_file:
     with tf.gfile.GFile(target_path, mode="r") as target_file:
+      #print(source_file.name())
       source, target = source_file.readline(), target_file.readline()
       counter = 0
       while source and target and (not max_size or counter < max_size):
@@ -135,7 +140,7 @@ def create_model(session, forward_only):
       FLAGS.learning_rate_decay_factor,
       forward_only=forward_only,
       dtype=dtype)
-  ckpt = tf.train.get_checkpoint_state(FLAGS.train_dir)
+  ckpt = tf.train.get_checkpoint_state(FLAGS.train_dir+FLAGS.checkpoint_dir)
   if ckpt and tf.train.checkpoint_exists(ckpt.model_checkpoint_path):
     print("Reading model parameters from %s" % ckpt.model_checkpoint_path)
     model.saver.restore(session, ckpt.model_checkpoint_path)
@@ -147,26 +152,27 @@ def create_model(session, forward_only):
 
 def train():
   """Train a en->fr translation model using WMT data."""
+
   from_train = None
   to_train = None
   from_dev = None
   to_dev = None
   if FLAGS.from_train_data and FLAGS.to_train_data:
-    from_train_data = FLAGS.from_train_data
-    to_train_data = FLAGS.to_train_data
-    from_dev_data = from_train_data
-    to_dev_data = to_train_data
-    if FLAGS.from_dev_data and FLAGS.to_dev_data:
-      from_dev_data = FLAGS.from_dev_data
-      to_dev_data = FLAGS.to_dev_data
-    from_train, to_train, from_dev, to_dev, _, _ = data_utils.prepare_data(
-        FLAGS.data_dir,
-        from_train_data,
-        to_train_data,
-        from_dev_data,
-        to_dev_data,
-        FLAGS.from_vocab_size,
-        FLAGS.to_vocab_size)
+      from_train_data = FLAGS.from_train_data
+      to_train_data = FLAGS.to_train_data
+      from_dev_data = from_train_data
+      to_dev_data = to_train_data
+      if FLAGS.from_dev_data and FLAGS.to_dev_data:
+          from_dev_data = FLAGS.from_dev_data
+          to_dev_data = FLAGS.to_dev_data
+      from_train, to_train, from_dev, to_dev, _, _ = data_utils.prepare_data(
+          FLAGS.data_dir,
+          from_train_data,
+          to_train_data,
+          from_dev_data,
+          to_dev_data,
+          FLAGS.from_vocab_size,
+          FLAGS.to_vocab_size)
   else:
       # Prepare WMT data.
       print("Preparing WMT data in %s" % FLAGS.data_dir)
@@ -225,10 +231,10 @@ def train():
           sess.run(model.learning_rate_decay_op)
         previous_losses.append(loss)
         # Save checkpoint and zero timer and loss.
-        checkpoint_path = os.path.join(FLAGS.train_dir, "translate.ckpt")
+        checkpoint_path = os.path.join(FLAGS.train_dir+FLAGS.checkpoint_dir, "translate.ckpt")
         model.saver.save(sess, checkpoint_path, global_step=model.global_step)
         step_time, loss = 0.0, 0.0
-        '''
+
         # Run evals on development set and print their perplexity.
         for bucket_id in xrange(len(_buckets)):
           if len(dev_set[bucket_id]) == 0:
@@ -242,7 +248,7 @@ def train():
               "inf")
           print("  eval: bucket %d perplexity %.2f" % (bucket_id, eval_ppx))
         sys.stdout.flush()
-        '''
+
 
 
 def decode():
