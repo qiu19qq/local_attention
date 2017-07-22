@@ -10,13 +10,13 @@ Why this project?  
   
 File description   
 ----
-  * `data_utils.py`   data preparation, the same one with Tensorflow: tutorials/rnn/translate/data_tuils.py  －
+  * `data_utils.py`   data preparation, the same one with Tensorflow: tutorials/rnn/translate/data_tuils.py  －
   
-  * `seq2seq_model.py`  the same one with Tensorflow: tutorials/rnn/translate/data_tuils.py  ＊
+  * `seq2seq_model.py`    the same one with Tensorflow: tutorials/rnn/translate/data_tuils.py  ＊
   
-  * `translate.py`  the same one with Tensorflow: tutorials/rnn/translate/data_tuils.py  ＊
+  * `translate.py`    the same one with Tensorflow: tutorials/rnn/translate/data_tuils.py  ＊
   
-  * `seq2seq_local.py`  attention decoeder function. Implement the "local attention" in function "local_attention_decoder". Another attention function, implements to calculate the new alignment weights with Gaussian distribution but not sets
+  * `seq2seq_local.py`    attention decoeder function. Implement the "local attention" in function "local_attention_decoder". Another attention function, implements to calculate the new alignment weights with Gaussian distribution but not sets
 the window, is named "local_attention_decodere_nowindow". Function "attention_decoder" is the original one
 in tensorflow.
                    
