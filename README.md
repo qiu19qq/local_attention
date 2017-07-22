@@ -10,7 +10,7 @@ Why this project?  
   
 File description   
 ----
-  ＊ ｀data_utils.py｀   data preparation, the same one with Tensorflow: tutorials/rnn/translate/data_tuils.py  －
+  * `data_utils.py`   data preparation, the same one with Tensorflow: tutorials/rnn/translate/data_tuils.py  －
   
   ＊＊seq2seq_model.py＊＊  the same one with Tensorflow: tutorials/rnn/translate/data_tuils.py  ＊
   
