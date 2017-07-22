@@ -2,14 +2,14 @@ A TensorFlow Implementation of the “Local Attention” in paper: Effective App
 ====
 
 Why this project?    
-－－－－－－
+----
   Attention is a useful machenism in NMT. Recently, the paper "Attention ia all you need" shows a new network 
   architecture which based solely on attention machenisms. I have two goals with this project. One is to have a 
   full understanding of attention machenism and the paper "Effective Approaches to Attention-based Neural Machine Translation".
   Another is to implement "local attention" by using tensorflow, since I didn't find the corresponding function in tensorflow.
   
 File description   
-－－－
+----
   data_utils.py   data preparation, the same one with Tensorflow: tutorials/rnn/translate/data_tuils.py  －
   
   seq2seq_model.py  the same one with Tensorflow: tutorials/rnn/translate/data_tuils.py  
@@ -21,7 +21,7 @@ the window, is named "local_attention_decodere_nowindow". Function "attention_de
 in tensorflow.
                    
 Training  
-－－－
+----
   Just use the same command line in Tensorflow tutorial:  
   python translate.py  
   
