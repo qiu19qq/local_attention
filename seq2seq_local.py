@@ -337,18 +337,17 @@ def local_attention_decoder(decoder_inputs,
                     # print(5,ai.get_shape())
 
                     # do the p_t part
-                    p_t=array_ops.reshape(p_t,[batch_size,1])
+                    center = tf.constant(D, dtype=dtypes.float32, shape=[batch_size, 1])
                     extent = tf.ones([1, attn_fixed_length], dtype=dtypes.float32)
-                    p_t = p_t * extent
-                    p_t = tf.reshape(p_t, [batch_size, attn_fixed_length, 1])
-                    # print (p_t.get_shape())
+                    center = center * extent
+                    center = tf.reshape(center, [batch_size, attn_fixed_length, 1])
 
                     pos = [i for i in xrange(attn_fixed_length)]
                     pos = tf.reshape(pos, [attn_fixed_length, 1])
                     pos = math_ops.cast(pos, dtype=dtypes.float32)
-                    # print((p_t-pos).get_shape(),"jing")
+                    #print((p_t - pos).get_shape(), "jing")
 
-                    value = math_ops.square(p_t - pos) * 2 / (D * D)
+                    value = math_ops.square(center - pos) * 2 / (D * D)
                     pre = math_ops.exp(math_ops.negative(value))
                     # print(pre.get_shape(),"qiu")
                     ai = ai * pre
